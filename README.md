@@ -1,6 +1,8 @@
 Hi, there! 👋
 
-This is a special fork of the Real World App you can use to install and set up Cypress and write tests from scratch for the purpose of learning Cypress or teaching Cypress to others. The Cypress project and some extraneous dependencies and config were removed, but the application is exactly the same. Enjoy!
+This is a special fork of the Real World App used for learning Cypress. The application is the same as the official Cypress [Real World App](https://github.com/cypress-io/cypress-realworld-app). The Cypress project and some extraneous dependencies and config were removed, but the application is exactly the same. Enjoy!
+
+Note that the rest of the Readme is directly from the official Real World App, including the contributors.
 
 -----
 <p align="center">
