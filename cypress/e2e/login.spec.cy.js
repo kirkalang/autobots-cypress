@@ -1,6 +1,12 @@
 /// <reference types="cypress" />
 
 describe('login', () => {
+
+    const data = {
+        username: 'Allie2',
+        password: 's3cret'
+    }
+
     beforeEach(() => {
         cy.visit('/signin')
     });
@@ -8,33 +14,34 @@ describe('login', () => {
     // Day 0 - initial basic login tests
 
     it('login with username and password', () => {
-        cy.get('#username').type('Allie2')
-        cy.get('#password').type('s3cret')
+        cy.get('#username').type(data.username)
+        cy.get('#password').type(data.password)
         cy.get('[data-test="signin-submit"]').should('be.enabled').click()
 
-        //cy.url().should('not.contain', '/signin')
         cy.location('pathname').should('equal','/')
         cy.get('[data-test="sidenav-username"]').should('have.text', '@Allie2')
     })
 
-    it('login button disabled until username & password fields not empty', () => {
-        // Disabling line below due to bug in Real World App. 
-        // Sign In btn only disabled after selecting input field
-        // cy.get('[data-test="signin-submit"]').should('be.disabled')
+    function submitBtnDisabled() {
+        cy.get('[data-test="signin-submit"]')
+            .should('be.disabled')
+            .and('have.class', 'Mui-disabled')
+    }
 
-        cy.get('#username').type('Allie2')
-        cy.get('[data-test="signin-submit"]').should('be.disabled')
+    it('login button disabled until username & password fields not empty', () => {
+        cy.get('#username').type(data.username)
+        submitBtnDisabled()
 
         cy.get('#username').clear()
-        cy.get('#password').type('s3cret')
-        cy.get('[data-test="signin-submit"]').should('be.disabled')
+        cy.get('#password').type(data.password)
+        submitBtnDisabled()
     })
 
     // Day 1 - new tests based on learnings from day 1
 
     it('sign in, select Remember me, validate remember is true in login request', () => {
-        cy.get('#username').type('Allie2')
-        cy.get('#password').type('s3cret')
+        cy.get('#username').type(data.username)
+        cy.get('#password').type(data.password)
         cy.contains('span', 'Remember me').click()
         cy.get('.PrivateSwitchBase-input-14').should('have.attr', 'value', 'true')
         
@@ -45,7 +52,6 @@ describe('login', () => {
             expect(xhr.request.body['remember']).to.match(/true/)
         })
 
-        // cy.url().should('not.contain', '/signin')
         cy.location('pathname').should('equal', '/')
     });
 })
