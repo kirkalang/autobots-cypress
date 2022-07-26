@@ -12,7 +12,8 @@ describe('login', () => {
         cy.get('#password').type('s3cret')
         cy.get('[data-test="signin-submit"]').should('be.enabled').click()
 
-        cy.url().should('not.contain', '/signin')
+        //cy.url().should('not.contain', '/signin')
+        cy.location('pathname').should('equal','/')
         cy.get('[data-test="sidenav-username"]').should('have.text', '@Allie2')
     })
 
@@ -31,10 +32,6 @@ describe('login', () => {
 
     // Day 1 - new tests based on learnings from day 1
 
-    it('login without remember me, logout and ensure direct visit navigates to signin page', () => {
-        
-    });
-
     it('sign in, select Remember me, validate remember is true in login request', () => {
         cy.get('#username').type('Allie2')
         cy.get('#password').type('s3cret')
@@ -48,6 +45,7 @@ describe('login', () => {
             expect(xhr.request.body['remember']).to.match(/true/)
         })
 
-        cy.url().should('not.contain', '/signin')
+        // cy.url().should('not.contain', '/signin')
+        cy.location('pathname').should('equal', '/')
     });
 })
