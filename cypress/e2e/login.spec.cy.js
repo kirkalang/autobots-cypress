@@ -2,10 +2,11 @@
 
 describe('login', () => {
     beforeEach(() => {
-        cy.visit('localhost:3000/signin')
+        cy.visit('/signin')
     });
     
-    
+    // Day 0 - initial basic login tests
+
     it('login with username and password', () => {
         cy.get('#username').type('Allie2')
         cy.get('#password').type('s3cret')
@@ -27,4 +28,26 @@ describe('login', () => {
         cy.get('#password').type('s3cret')
         cy.get('[data-test="signin-submit"]').should('be.disabled')
     })
+
+    // Day 1 - new tests based on learnings from day 1
+
+    it('login without remember me, logout and ensure direct visit navigates to signin page', () => {
+        
+    });
+
+    it('sign in, select Remember me, validate remember is true in login request', () => {
+        cy.get('#username').type('Allie2')
+        cy.get('#password').type('s3cret')
+        cy.contains('span', 'Remember me').click()
+        cy.get('.PrivateSwitchBase-input-14').should('have.attr', 'value', 'true')
+        
+        cy.intercept('POST', '/login').as('login_post')
+        cy.contains('button', 'Sign In').click()
+
+        cy.wait('@login_post').then(xhr => {
+            expect(xhr.request.body['remember']).to.match(/true/)
+        })
+
+        cy.url().should('not.contain', '/signin')
+    });
 })
